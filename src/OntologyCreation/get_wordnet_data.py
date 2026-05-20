@@ -31,7 +31,7 @@ def _wiki_summary(name: str) -> str | None:
         break
 
     data = resp.json()
-    if data.get("type") == "disambiguation":
+    if data.get("type") == " ":
         _log.warning("%s — disambiguation page", name)
         return None
     extract = data.get("extract", "")
@@ -99,7 +99,7 @@ def get_wordnet_data(concept: str, depth: int = -1):
                 continue
             parent_name = name_map[hypernym]
             parent_summary = classes[parent_name]["summary"]
-            mentioned = is_mentioned(child_name, parent_summary, parent_name, child_summary)
+            mentioned = is_mentioned(child_name, child_summary, parent_name, parent_summary)
             hierarchy.setdefault(child_name, []).append(
                 {"parent": parent_name, "mentioned": mentioned}
             )

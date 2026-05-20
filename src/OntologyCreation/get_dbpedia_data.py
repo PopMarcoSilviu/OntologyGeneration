@@ -73,7 +73,7 @@ def get_dbpedia_data(concept: str, limit: int = -1):
         parent = parent_uri.split("/")[-1]
         child_summary = data_formatted["classes"].get(child, {}).get("summary") or ""
         parent_summary = data_formatted["classes"].get(parent, {}).get("summary") or ""
-        mentioned = is_mentioned(child, parent_summary, parent, child_summary)
+        mentioned = is_mentioned(child, child_summary, parent, parent_summary)
         hierarchy.setdefault(child, []).append({"parent": parent, "mentioned": mentioned})
     data_formatted["hierarchy"] = hierarchy
 

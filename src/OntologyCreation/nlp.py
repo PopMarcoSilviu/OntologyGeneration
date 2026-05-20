@@ -59,10 +59,8 @@ def build_lemma_map(extracted: set[str], real: set[str]) -> dict[str, str]:
     return result
 
 
-def is_mentioned(term_a: str, summary_b: str, term_b: str, summary_a: str) -> bool:
+def is_mentioned(term_a: str, summary_a: str, term_b: str, summary_b: str) -> bool:
     """True if any variant of term_a appears in summary_b, or vice versa."""
-    summary_a_l = summary_a.lower()
-    summary_b_l = summary_b.lower()
-    return any(v in summary_b_l for v in term_variants(term_a)) or any(
-        v in summary_a_l for v in term_variants(term_b)
+    return any(v in summary_b.lower() for v in term_variants(term_a)) or any(
+        v in summary_a.lower() for v in term_variants(term_b)
     )

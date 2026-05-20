@@ -79,9 +79,9 @@ def class_card(data: dict, class_name: str) -> None:
         any_mentioned = any(
             is_mentioned(
                 class_name,
-                data["classes"].get(p["parent"], {}).get("summary", ""),
-                p["parent"],
                 class_summary,
+                p["parent"],
+                data["classes"].get(p["parent"], {}).get("summary", ""),
             )
             for p in entries
         )
@@ -218,9 +218,9 @@ def _build_graph(
         for p in parents
         if is_mentioned(
             child,
-            data["classes"].get(p["parent"], {}).get("summary", ""),
-            p["parent"],
             data["classes"].get(child, {}).get("summary", ""),
+            p["parent"],
+            data["classes"].get(p["parent"], {}).get("summary", ""),
         )
     }
 
