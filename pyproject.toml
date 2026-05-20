@@ -18,6 +18,8 @@ dependencies = [
     "streamlit>=1.56.0",
     "taskipy>=1.14.1",
     "tqdm>=4.67.3",
+    "types-networkx>=3.6.1.20260518",
+    "types-pyyaml>=6.0.12.20260518",
 ]
 
 [build-system]
