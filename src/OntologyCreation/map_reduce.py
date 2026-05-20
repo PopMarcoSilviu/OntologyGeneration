@@ -88,6 +88,7 @@ async def _extract_classes(
     chunk: list[tuple[str, str]],
     settings: ModelSettings,
 ) -> ClassesOnly:
+    """Run pass-1 class extraction on a single chunk of (name, summary) pairs."""
     text = "\n\n=====\n\n".join(summary for _, summary in chunk)
     result = await agent.run(text, model_settings=settings)
     return result.output
@@ -99,6 +100,7 @@ async def _extract_hierarchy(
     component_classes: set[str],
     settings: ModelSettings,
 ) -> HierarchyOnly:
+    """Run pass-2 hierarchy extraction for one component, filtering to component_classes only."""
     classes_list = "\n".join(f"- {c}" for c in sorted(component_classes))
     text = "\n\n=====\n\n".join(summary for _, summary in component_items)
     message = f"Known classes:\n{classes_list}\n\n=====\n\n{text}"
@@ -123,6 +125,24 @@ async def run_map_reduce(
     concept: str,
     cfg: dict,
 ) -> Ontology:
+    """Two-pass map-reduce ontology extraction.
+
+    Pass 1 extracts class names per word-count chunk in parallel.
+    Pass 2 extracts subclass relationships per co-occurrence component in parallel,
+    using only the classes known to each component.
+
+    Args:
+        node_model: Model string for pass-1 class extraction.
+        edge_model: Model string for pass-2 hierarchy extraction.
+        node_prompt_name: MLflow prompt registry name for pass-1.
+        edge_prompt_name: MLflow prompt registry name for pass-2.
+        items: List of (name, summary) pairs to process.
+        concept: Top-level ontology concept (e.g. "Monkey").
+        cfg: Config dict with keys: max_words, temperature, max_tokens.
+
+    Returns:
+        Merged Ontology with deduplicated classes and combined hierarchy.
+    """
     max_words = cfg.get("max_words", 10000)
     settings = ModelSettings(
         temperature=cfg.get("temperature", 1.0),

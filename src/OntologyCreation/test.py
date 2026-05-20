@@ -30,6 +30,18 @@ def evaluate(
     mentionable_pairs: set,
     strict: bool = False,
 ):
+    """Compute precision/recall metrics and Venn breakdown against ground truth.
+
+    Args:
+        extracted: Ontology produced by the extraction pipeline.
+        ground_truth: Reference ontology from the data source.
+        mentionable_pairs: Hierarchy pairs that have Wikipedia cross-reference evidence.
+        strict: If True, skip lemma fuzzy-matching and require exact name matches.
+
+    Returns:
+        Tuple of (metrics dict, details dict). metrics has class/hierarchy
+        precision and recall; details has in_original/extra/missing breakdowns.
+    """
     extracted_classes = {c.lower() for c in extracted.classes}
     real_classes_lower = {c.lower() for c in ground_truth.classes}
     real_pairs = {
@@ -106,6 +118,11 @@ def evaluate(
 
 
 async def run(cfg: dict):
+    """Load data, run extraction (single-call or map-reduce), evaluate, and log to MLflow.
+
+    Args:
+        cfg: Config dict loaded from a YAML file (see configs/baseline.yaml).
+    """
     model = os.getenv("MODEL", "")
 
     with open(DATA_PATH / cfg.get("source", "dbpedia") / f"{cfg['ontology']}.json") as f:

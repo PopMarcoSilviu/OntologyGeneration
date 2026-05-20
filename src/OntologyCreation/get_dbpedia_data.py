@@ -3,15 +3,15 @@ import re
 
 import requests
 
+from OntologyCreation import DATA_PATH
+from OntologyCreation.nlp import is_mentioned
+
 _MAX_SENTENCES = 5
 
 
 def _truncate(text: str) -> str:
     sentences = re.split(r"(?<=[.!?])\s+", text.strip())
     return " ".join(sentences[:_MAX_SENTENCES])
-
-from OntologyCreation import DATA_PATH
-from OntologyCreation.nlp import is_mentioned
 
 
 def get_dbpedia_data(concept: str, limit: int = -1):
@@ -57,7 +57,11 @@ def get_dbpedia_data(concept: str, limit: int = -1):
             continue
 
         wiki_found_items.append(item)
-        data_formatted["classes"][short_name] = {"uri": item, "summary": _truncate(summary), "origin": "wikipedia"}
+        data_formatted["classes"][short_name] = {
+            "uri": item,
+            "summary": _truncate(summary),
+            "origin": "wikipedia",
+        }
 
     hierarchy = {}
     for x in results["results"]["bindings"]:

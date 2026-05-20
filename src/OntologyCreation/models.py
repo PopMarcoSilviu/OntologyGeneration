@@ -7,6 +7,8 @@ from pydantic import BaseModel
 
 
 class ClassesOnly(BaseModel):
+    """Pass-1 output: a flat list of extracted class names."""
+
     classes: list[str] = []
 
     @overload
@@ -14,6 +16,7 @@ class ClassesOnly(BaseModel):
     @overload
     def __or__(self, other: HierarchyOnly | Ontology) -> Ontology: ...
     def __or__(self, other):
+        """Merge with another partial result. Same type -> same type; cross-type -> Ontology."""
         if isinstance(other, ClassesOnly):
             return ClassesOnly(classes=list(set(self.classes + other.classes)))
         if isinstance(other, HierarchyOnly):
@@ -26,6 +29,8 @@ class ClassesOnly(BaseModel):
 
 
 class HierarchyOnly(BaseModel):
+    """Pass-2 output: subclass relationships only (child -> [parents])."""
+
     subclass_of: dict[str, list[str]] = {}
 
     @overload
@@ -33,6 +38,7 @@ class HierarchyOnly(BaseModel):
     @overload
     def __or__(self, other: ClassesOnly | Ontology) -> Ontology: ...
     def __or__(self, other):
+        """Merge with another partial result. Same type -> same type; cross-type -> Ontology."""
         if isinstance(other, HierarchyOnly):
             merged = {k: list(v) for k, v in self.subclass_of.items()}
             for k, v in other.subclass_of.items():
@@ -48,10 +54,13 @@ class HierarchyOnly(BaseModel):
 
 
 class Ontology(BaseModel):
+    """Full ontology TBox: class names and subclass relationships."""
+
     classes: list[str] = []
     subclass_of: dict[str, list[str]] = {}  # child -> [parents]
 
     def __or__(self, other: Ontology | ClassesOnly | HierarchyOnly) -> Ontology:
+        """Merge with another partial or full result, always returning a full Ontology."""
         if isinstance(other, HierarchyOnly):
             merged = {k: list(v) for k, v in self.subclass_of.items()}
             for k, v in other.subclass_of.items():
@@ -71,12 +80,15 @@ class Ontology(BaseModel):
 
 
 def merge_classes(results: list[ClassesOnly]) -> ClassesOnly:
+    """Reduce a list of ClassesOnly results into one deduplicated ClassesOnly."""
     return reduce(lambda a, b: a | b, results, ClassesOnly())
 
 
 def merge_hierarchy(results: list[HierarchyOnly]) -> HierarchyOnly:
+    """Reduce a list of HierarchyOnly results into one merged HierarchyOnly."""
     return reduce(lambda a, b: a | b, results, HierarchyOnly())
 
 
 def merge(results: list[Ontology]) -> Ontology:
+    """Reduce a list of Ontology results into one merged Ontology."""
     return reduce(lambda a, b: a | b, results, Ontology())

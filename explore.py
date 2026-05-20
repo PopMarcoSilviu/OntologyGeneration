@@ -39,10 +39,7 @@ def load_data(concept: str) -> dict:
 
 
 def available_concepts() -> list[str]:
-    return sorted(
-        f"{p.parent.name}/{p.stem}"
-        for p in DATA_PATH.glob("*/*.json")
-    )
+    return sorted(f"{p.parent.name}/{p.stem}" for p in DATA_PATH.glob("*/*.json"))
 
 
 def get_relations(data: dict, class_name: str) -> tuple[list[str], list[str]]:

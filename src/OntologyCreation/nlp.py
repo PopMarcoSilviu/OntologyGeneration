@@ -11,6 +11,7 @@ _lemmatizer = WordNetLemmatizer()
 
 
 def lemma_key(phrase: str) -> str:
+    """Normalise a phrase to ASCII lowercase lemmas for fuzzy matching."""
     ascii_phrase = unicodedata.normalize("NFKD", phrase).encode("ascii", "ignore").decode("ascii")
     return " ".join(_lemmatizer.lemmatize(w) for w in ascii_phrase.lower().split())
 

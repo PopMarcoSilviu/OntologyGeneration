@@ -23,6 +23,7 @@ mlruns/
 
 # Jupyter
 .ipynb_checkpoints/
+*.ipynb
 
 # VSCode
 .vscode/
