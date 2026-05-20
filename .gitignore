@@ -30,6 +30,7 @@ mlruns/
 
 # Claude
 .claude/
+CLAUDE*.md
 
 # Logfire
 .logfire/
