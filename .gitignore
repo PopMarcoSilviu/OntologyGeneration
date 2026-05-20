@@ -1,0 +1,34 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.mypy_cache/
+.ruff_cache/
+dist/
+*.egg-info/
+*.stackdump
+
+# uv
+.venv/
+
+# Env
+.env
+
+# Data
+data/
+
+# MLflow
+mlflow.db
+mlruns/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# VSCode
+.vscode/
+
+# Claude
+.claude/
+
+# Logfire
+.logfire/

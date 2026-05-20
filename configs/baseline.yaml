@@ -1,0 +1,12 @@
+ontology: Monkey_2
+source: wordnet
+temperature: 1.0
+prompt: prompts:/ontology_extraction@latest
+node_prompt: prompts:/node_extraction@latest
+node_model: MODEL_FAST
+edge_prompt: prompts:/edge_extraction@latest
+edge_model: MODEL_SMART
+shuffle_input_test: true
+strict_match: false
+max_output_tokens: 8192
+max_words: 25000
