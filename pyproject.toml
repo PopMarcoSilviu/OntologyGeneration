@@ -32,6 +32,7 @@ dev = [
     "pytest",
     "ruff",
     "mypy",
+    "sphinx>=9.1.0",
 ]
 
 [tool.taskipy.tasks]
@@ -42,6 +43,7 @@ explore      = "streamlit run explore.py"
 
 [tool.ruff]
 line-length = 100
+exclude = ["*.ipynb"]
 
 [tool.ruff.lint]
 select = ["E", "F", "W", "I", "UP", "B"]
