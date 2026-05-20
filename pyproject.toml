@@ -35,6 +35,7 @@ dev = [
     "ruff",
     "mypy",
     "sphinx>=9.1.0",
+    "furo>=2024.1.29",
 ]
 
 [tool.taskipy.tasks]
