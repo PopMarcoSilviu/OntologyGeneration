@@ -24,7 +24,7 @@ def _build_cooccurrence_graph(
     all_classes: set[str],
 ) -> nx.Graph:
     """Paragraph nodes; edge between two paragraphs if they mention the same class."""
-    G = nx.Graph()
+    G: nx.Graph = nx.Graph()
     for name, summary in items:
         G.add_node(name, summary=summary, words=word_count(summary))
 
