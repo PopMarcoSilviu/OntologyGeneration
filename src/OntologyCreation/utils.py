@@ -2,9 +2,7 @@ def word_count(text: str) -> int:
     return len(text.split())
 
 
-def chunk_by_words(
-    items: list[tuple[str, str]], max_words: int
-) -> list[list[tuple[str, str]]]:
+def chunk_by_words(items: list[tuple[str, str]], max_words: int) -> list[list[tuple[str, str]]]:
     """Split (name, summary) pairs into chunks where total words <= max_words."""
     chunks: list[list[tuple[str, str]]] = []
     current: list[tuple[str, str]] = []

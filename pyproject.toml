@@ -48,3 +48,7 @@ exclude = ["*.ipynb"]
 [tool.ruff.lint]
 select = ["E", "F", "W", "I", "UP", "B"]
 ignore = ["E501"]
+
+[[tool.mypy.overrides]]
+module = ["nltk", "nltk.*"]
+ignore_missing_imports = true

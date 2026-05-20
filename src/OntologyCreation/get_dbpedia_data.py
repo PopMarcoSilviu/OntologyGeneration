@@ -31,7 +31,7 @@ def get_dbpedia_data(concept: str, limit: int = -1):
     results = r.json()
 
     headers = {"User-Agent": "MyOntologyProject/1.0"}
-    data_formatted = {}
+    data_formatted: dict[str, dict] = {}
     data_formatted["classes"] = {}
 
     unique_items = list(set([x["subclass"]["value"] for x in results["results"]["bindings"]]))
@@ -63,7 +63,7 @@ def get_dbpedia_data(concept: str, limit: int = -1):
             "origin": "wikipedia",
         }
 
-    hierarchy = {}
+    hierarchy: dict[str, list] = {}
     for x in results["results"]["bindings"]:
         child_uri = x["subclass"]["value"]
         parent_uri = x["parent"]["value"]
